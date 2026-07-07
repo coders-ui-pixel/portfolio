@@ -297,7 +297,61 @@ td { padding: 1rem; border-bottom: 1px solid var(--border); }
     .sidebar{transform:translateX(-280px);}.main{margin-left:0}
     .grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr}
     .form-row{grid-template-columns:1fr}.pub-nav-links{display:none}
-    .pub-content{padding:0 16px 60px}.hero-title{font-size:36px}</style>
+    .pub-content{padding:0 16px 60px}.hero-title{font-size:36px}
+}
+
+/* Premium Admin UI Enhancements */
+.sidebar { background: rgba(7,7,11,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.05); padding: 1.5rem 1rem; }
+[data-theme="light"] .sidebar { background: rgba(255,255,255,0.7); border-right: 1px solid rgba(0,0,0,0.05); }
+.topbar { padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); }
+.content { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+.stat-card { background: var(--bg-card); border-radius: 20px; padding: 1.8rem; position: relative; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: var(--shadow); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.stat-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-color: var(--accent); }
+[data-theme="light"] .stat-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+.stat-card.v1 { background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(0,0,0,0)); }
+.stat-card.v2 { background: linear-gradient(135deg, rgba(236,72,153,0.08), rgba(0,0,0,0)); }
+.stat-card.v3 { background: linear-gradient(135deg, rgba(20,184,166,0.08), rgba(0,0,0,0)); }
+.stat-card.v4 { background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(0,0,0,0)); }
+.stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 0.5rem; }
+.stat-val { font-size: 2.5rem; font-weight: 800; font-family: var(--font-display); line-height: 1; }
+.stat-val.v1 { color: #818cf8; }
+.stat-val.v2 { color: #f472b6; }
+.stat-val.v3 { color: #2dd4bf; }
+.stat-val.v4 { color: #fbbf24; }
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; }
+.table-wrap { background: var(--bg-card); border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--glass-border); }
+table { width: 100%; border-collapse: separate; border-spacing: 0; }
+th { background: rgba(0,0,0,0.2); padding: 1.2rem 1rem; font-weight: 600; font-size: 0.75rem; letter-spacing: 1px; }
+[data-theme="light"] th { background: rgba(0,0,0,0.03); }
+td { padding: 1rem; border-bottom: 1px solid var(--border); transition: var(--transition); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+[data-theme="light"] tr:hover td { background: rgba(0,0,0,0.02); }
+.nav-item { border-radius: 12px; margin-bottom: 0.2rem; padding: 0.8rem 1rem; position: relative; overflow: hidden; }
+.nav-item.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); border-radius: 0 4px 4px 0; }
+.nav-item.active { background: linear-gradient(90deg, rgba(99,102,241,0.1) 0%, transparent 100%); color: var(--accent); }
+.avatar { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; font-weight: 700; font-family: var(--font-display); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.avatar.sm { width: 32px; height: 32px; font-size: 12px; border-radius: 8px; }
+.card { transition: all 0.3s ease; }
+.card:hover { border-color: rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+[data-theme="light"] .card:hover { border-color: rgba(0,0,0,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.form-input { width: 100%; padding: 0.8rem 1rem; background: var(--bg4); border: 1px solid var(--border); border-radius: 12px; color: var(--text); transition: all 0.3s ease; font-family: var(--font-main); }
+.form-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); background: var(--bg2); }
+.section-block { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 16px; margin-bottom: 1rem; display: flex; align-items: stretch; transition: all 0.3s ease; overflow: hidden; }
+.section-block:hover { border-color: var(--accent); transform: translateX(5px); }
+.section-drag { width: 40px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: grab; font-size: 1.2rem; }
+[data-theme="light"] .section-drag { background: rgba(0,0,0,0.03); }
+.section-content { flex: 1; padding: 1.2rem; display: flex; align-items: center; justify-content: space-between; }
+.type-badge { font-size: 0.65rem; padding: 0.2rem 0.6rem; border-radius: 10px; border: 1px solid var(--border); color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+/* Toggle switches */
+.toggle { position: relative; display: inline-block; width: 44px; height: 24px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-track { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--bg4); border-radius: 24px; transition: .4s; border: 1px solid var(--border); }
+.toggle-track:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: var(--text-muted); border-radius: 50%; transition: .4s; }
+.toggle input:checked + .toggle-track { background-color: var(--accent); border-color: var(--accent); }
+.toggle input:checked + .toggle-track:before { transform: translateX(20px); background-color: white; }</style>
 </head>
 <body>
 <div id="app"></div>
@@ -896,35 +950,35 @@ function rAdminOverview(){
   return `
   <div class="page-header"><div class="page-title">Dashboard</div><div class="page-desc">Platform overview — welcome back, ${CU.name.split(' ')[0]}</div></div>
   <div class="grid-4 mb-24">
-    <div class="stat-card v1"><div class="stat-label">Total Users</div><div class="stat-val v1">${total}</div></div>
-    <div class="stat-card v2"><div class="stat-label">Admins</div><div class="stat-val v2">${admins+1}</div></div>
-    <div class="stat-card v3"><div class="stat-label">Data Records</div><div class="stat-val v3">${totalRecs}</div></div>
-    <div class="stat-card v4"><div class="stat-label">Live</div><div class="stat-val v4" style="font-size:16px;margin-top:8px">${ls?.settings?.isLive?'🔴 LIVE':'⭕ Offline'}</div></div>
+    <div class="stat-card v1"><div class="stat-label"><i class="fas fa-users"></i> Total Users</div><div class="stat-val v1">${total}</div></div>
+    <div class="stat-card v2"><div class="stat-label"><i class="fas fa-shield-alt"></i> Admins</div><div class="stat-val v2">${admins+1}</div></div>
+    <div class="stat-card v3"><div class="stat-label"><i class="fas fa-database"></i> Data Records</div><div class="stat-val v3">${totalRecs}</div></div>
+    <div class="stat-card v4"><div class="stat-label"><i class="fas fa-broadcast-tower"></i> Live Status</div><div class="stat-val v4" style="font-size:16px;margin-top:8px;display:flex;align-items:center;height:100%">${ls?.settings?.isLive?'<span style="color:#ef4444">🔴 LIVE</span>':'<span style="color:var(--text-muted)">⭕ Offline</span>'}</div></div>
   </div>
   <div class="grid-2">
     <div class="card">
-      <div class="card-header"><div class="card-title">Recent Users</div><button class="btn btn-secondary btn-sm" onclick="APAGE='users';render()">View All</button></div>
+      <div class="card-header" style="margin-bottom: 1rem;"><div class="card-title">Recent Users</div></div>
       ${ST.users.slice(-6).reverse().map(u=>`
-      <div class="flex-between" style="padding:9px 0;border-bottom:1px solid var(--border)">
+      <div class="flex-between" style="padding:12px 0;border-bottom:1px solid var(--border)">
         <div class="flex">
           <div class="avatar sm">${inits(u.name)}</div>
           <div>
-            <div style="font-size:13px;font-weight:500">${u.name}</div>
-            <div class="text-xs">${u.email}</div>
+            <div style="font-size:13px;font-weight:600">${u.name}</div>
+            <div class="text-xs" style="color:var(--text-muted)">${u.email}</div>
           </div>
         </div>
-        <span class="tag ${u.role==='superadmin'?'tag-sa':u.role==='admin'?'tag-admin':'tag-user'}">${u.role}</span>
+        <span class="type-badge" style="background:var(--glass)">${u.role}</span>
       </div>`).join('')}
+      <button class="btn btn-ghost" style="width:100%;margin-top:1rem;justify-content:center;font-size:12px" onclick="APAGE='users';render()">View All Users</button>
     </div>
     <div class="card">
-      <div class="card-header"><div class="card-title">Quick Actions</div></div>
-      <div style="display:grid;gap:8px">
-        <button class="btn btn-primary" onclick="APAGE='sections';render()">📐 Manage Sections</button>
-        <button class="btn btn-secondary" onclick="APAGE='live';render()">📡 Live Stream Control</button>
-        <button class="btn btn-secondary" onclick="APAGE='users';render()">👥 Manage Users</button>
-        <button class="btn btn-secondary" onclick="APAGE='admins';render()">🛡️ Manage Admins</button>
-        <button class="btn btn-secondary" onclick="APAGE='settings';render()">⚙️ Site Settings</button>
-        <button class="btn btn-success" onclick="expAllUsers()">⬇ Export All Users (Excel)</button>
+      <div class="card-header" style="margin-bottom: 1rem;"><div class="card-title">Quick Actions</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <button class="btn btn-ghost" onclick="APAGE='sections';render()"><i class="fas fa-layer-group" style="color:var(--accent)"></i> Sections</button>
+        <button class="btn btn-ghost" onclick="APAGE='live';render()"><i class="fas fa-satellite-dish" style="color:#ef4444"></i> Stream</button>
+        <button class="btn btn-ghost" onclick="APAGE='users';render()"><i class="fas fa-users-cog" style="color:#14b8a6"></i> Users</button>
+        <button class="btn btn-ghost" onclick="APAGE='settings';render()"><i class="fas fa-cog" style="color:#8b5cf6"></i> Settings</button>
+        <button class="btn btn-primary" style="grid-column: span 2; justify-content: center; margin-top: 8px;" onclick="expAllUsers()"><i class="fas fa-file-excel"></i> Export All Users</button>
       </div>
     </div>
   </div>`;
@@ -949,13 +1003,13 @@ function rAdminUsers(){
           <td class="text-xs">${i+1}</td>
           <td><div class="flex"><div class="avatar sm">${inits(u.name)}</div><span style="font-weight:500">${u.name}</span></div></td>
           <td class="text-sm">${u.email}</td>
-          <td><span class="tag ${u.role==='superadmin'?'tag-sa':u.role==='admin'?'tag-admin':'tag-user'}">${u.role}</span></td>
-          <td><span class="badge info">${(u.data||[]).length}</span></td>
-          <td class="text-xs">${u.createdAt||'—'}</td>
-          <td><div class="flex">
-            <button class="btn btn-secondary btn-sm" onclick="viewUData('${u.id}')">Data</button>
-            <button class="btn btn-success btn-sm" onclick="expUData('${u.id}')">Excel</button>
-            ${u.id!==CU.id&&u.role!=='superadmin'?`<button class="btn btn-danger btn-sm" onclick="delUser('${u.id}')">Del</button>`:''}
+          <td><span class="type-badge" style="background:var(--glass)">${u.role}</span></td>
+          <td><span class="badge" style="background:rgba(99,102,241,0.1);color:var(--accent);padding:2px 8px;border-radius:10px">${(u.data||[]).length}</span></td>
+          <td class="text-xs" style="color:var(--text-muted)">${u.createdAt||'—'}</td>
+          <td><div class="flex" style="gap:6px">
+            <button class="btn btn-ghost" style="padding:0.4rem 0.6rem;font-size:0.8rem;" title="View Data" onclick="viewUData('${u.id}')"><i class="fas fa-eye" style="color:var(--accent)"></i></button>
+            <button class="btn btn-ghost" style="padding:0.4rem 0.6rem;font-size:0.8rem;" title="Export Excel" onclick="expUData('${u.id}')"><i class="fas fa-download" style="color:#10b981"></i></button>
+            ${u.id!==CU.id&&u.role!=='superadmin'?`<button class="btn btn-ghost" style="padding:0.4rem 0.6rem;font-size:0.8rem;" title="Delete" onclick="delUser('${u.id}')"><i class="fas fa-trash-alt" style="color:#ef4444"></i></button>`:''}
           </div></td>
         </tr>`).join('')}
       </tbody>
@@ -1224,22 +1278,22 @@ function rSidebar(type){
   const isA=type==='admin';
   const nav=isA?[
     {lbl:'Main',items:[
-      {id:'dashboard',ic:'🏠',lb:'Dashboard'},
-      {id:'users',ic:'👥',lb:'Users'},
-      {id:'admins',ic:'🛡️',lb:'Admins'},
+      {id:'dashboard',ic:'<i class="fas fa-home"></i>',lb:'Dashboard'},
+      {id:'users',ic:'<i class="fas fa-users"></i>',lb:'Users'},
+      {id:'admins',ic:'<i class="fas fa-shield-alt"></i>',lb:'Admins'},
     ]},
     {lbl:'Content',items:[
-      {id:'sections',ic:'📐',lb:'Sections'},
-      {id:'live',ic:'📡',lb:'Live Stream'},
+      {id:'sections',ic:'<i class="fas fa-layer-group"></i>',lb:'Sections'},
+      {id:'live',ic:'<i class="fas fa-satellite-dish"></i>',lb:'Live Stream'},
     ]},
     {lbl:'System',items:[
-      {id:'settings',ic:'⚙️',lb:'Site Settings'},
+      {id:'settings',ic:'<i class="fas fa-cog"></i>',lb:'Site Settings'},
     ]}
   ]:[
     {lbl:'My Account',items:[
-      {id:'overview',ic:'🏠',lb:'Overview'},
-      {id:'my-data',ic:'📊',lb:'My Data'},
-      {id:'profile',ic:'👤',lb:'Profile'},
+      {id:'overview',ic:'<i class="fas fa-home"></i>',lb:'Overview'},
+      {id:'my-data',ic:'<i class="fas fa-chart-bar"></i>',lb:'My Data'},
+      {id:'profile',ic:'<i class="fas fa-user"></i>',lb:'Profile'},
     ]}
   ];
   const curr=isA?APAGE:PAGE;
@@ -1262,11 +1316,11 @@ function rSidebar(type){
     </div>
     <div class="nav-section" style="border-top: 1px solid var(--border); padding-top: 1rem;">
       <div class="nav-item" onclick="toggleTheme()">
-        <span class="nav-icon">${ST.theme === 'dark' ? '☀️' : '🌙'}</span>
+        <span class="nav-icon" style="width: 24px; text-align: center;">${ST.theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'}</span>
         <span style="font-size: 0.9rem;">${ST.theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
       </div>
       <div class="nav-item" onclick="VIEW='public';render()">
-        <span class="nav-icon">🌐</span><span style="font-size: 0.9rem;">View Portfolio</span>
+        <span class="nav-icon" style="width: 24px; text-align: center;"><i class="fas fa-globe"></i></span><span style="font-size: 0.9rem;">View Portfolio</span>
       </div>
     </div>
     <div class="sidebar-footer" style="border-top-color: var(--border); background: var(--glass);">
