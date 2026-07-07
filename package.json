@@ -1,0 +1,18 @@
+{
+  "name": "balkrishna_site",
+  "version": "1.0.0",
+  "description": "A premium, production-ready personal portfolio and management platform. Fully customizable by admin, featuring modern glassmorphism aesthetics and advanced interactivity.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}

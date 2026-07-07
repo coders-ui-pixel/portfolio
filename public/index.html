@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bal Krishna — Personal Platform</title>
+<meta name="description" content="Bal Krishna - Full Stack Developer & IT Professional Portfolio and Platform">
+<meta name="keywords" content="Bal Krishna, Developer, Portfolio, IT Professional, C++, Python, React">
+<meta property="og:title" content="Bal Krishna — Personal Platform">
+<meta property="og:description" content="Modern personal platform for data management and portfolio showcase.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root {
+    /* Dark Theme (Default) */
+    --bg: #030305;
+    --bg-alt: #0a0a0f;
+    --bg2: #0a0a0f;
+    --bg4: #16161f;
+    --bg-card: rgba(16, 16, 24, 0.7);
+    --bg-sidebar: #07070b;
+    --text: #ffffff;
+    --text-dim: #94a3b8;
+    --text2: #94a3b8;
+    --text-muted: #64748b;
+    --text3: #64748b;
+    --accent: #6366f1;
+    --accent2: #ec4899;
+    --accent-glow: rgba(99, 102, 241, 0.5);
+    --accent-secondary: #ec4899;
+    --accent-tertiary: #14b8a6;
+    --border: rgba(255, 255, 255, 0.08);
+    --border2: rgba(255, 255, 255, 0.12);
+    --border-hover: rgba(255, 255, 255, 0.15);
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    --font-main: 'Space Grotesk', sans-serif;
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --danger: #ef4444;
+    --success: #22c55e;
+    --warn: #f59e0b;
+}
+
+[data-theme="light"] {
+    --bg: #f8fafc;
+    --bg-alt: #f1f5f9;
+    --bg2: #f1f5f9;
+    --bg4: #e2e8f0;
+    --bg-card: rgba(255, 255, 255, 0.8);
+    --bg-sidebar: #ffffff;
+    --text: #0f172a;
+    --text-dim: #475569;
+    --text2: #475569;
+    --text-muted: #64748b;
+    --text3: #94a3b8;
+    --accent: #4f46e5;
+    --accent2: #db2777;
+    --accent-glow: rgba(79, 70, 229, 0.3);
+    --accent-secondary: #db2777;
+    --accent-tertiary: #0d9488;
+    --border: rgba(0, 0, 0, 0.08);
+    --border2: rgba(0, 0, 0, 0.12);
+    --border-hover: rgba(0, 0, 0, 0.15);
+    --glass: rgba(0, 0, 0, 0.02);
+    --glass-border: rgba(0, 0, 0, 0.04);
+    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    --danger: #dc2626;
+    --success: #16a34a;
+    --warn: #d97706;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    background: var(--bg); 
+    color: var(--text); 
+    font-family: var(--font-main); 
+    line-height: 1.6; 
+    transition: background-color 0.5s ease, color 0.5s ease;
+    overflow-x: hidden;
+}
+
+/* Layout */
+.app { display: flex; min-height: 100vh; }
+.sidebar { 
+    width: 280px; 
+    background: var(--bg-sidebar); 
+    border-right: 1px solid var(--border); 
+    position: fixed; 
+    height: 100vh; 
+    z-index: 1000;
+    padding: 2rem 1.5rem;
+    transition: var(--transition);
+}
+.main { margin-left: 280px; flex: 1; min-height: 100vh; position: relative; }
+
+/* Components */
+.glass-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+}
+.btn-primary { 
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); 
+    color: white;
+}
+.btn-ghost { background: var(--glass); color: var(--text); border: 1px solid var(--border); }
+
+/* Public Navigation */
+.pub-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.pub-nav-links { display: flex; gap: 2rem; align-items: center; }
+.pub-nav-link { font-size: 0.9rem; color: var(--text-dim); cursor: pointer; transition: var(--transition); }
+.pub-nav-link.cta { background: var(--accent); color: white; padding: 0.6rem 1.2rem; border-radius: 50px; }
+
+/* Content Layout */
+.pub-content { 
+    padding: 40px 2rem 100px; 
+    max-width: 1100px; 
+    margin: 0 auto;
+    width: 100%;
+}
+
+.hero {
+    min-height: calc(100vh - 250px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Sections */
+.section-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+.section-heading { font-family: var(--font-display); font-weight: 800; font-size: 2.5rem; margin-bottom: 2rem; }
+
+/* Hero Section */
+.hero { padding: 120px 0 80px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.hero-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(3rem, 8vw, 5rem); line-height: 1.1; margin-bottom: 1.5rem; }
+
+/* Skills Grid */
+.skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.5rem; }
+.skill-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; padding: 1.5rem; text-align: center; transition: var(--transition); }
+.skill-card:hover { background: var(--bg-card); border-color: var(--accent); transform: translateY(-5px); }
+.skill-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+.skill-name { font-weight: 600; font-size: 1rem; }
+
+/* Project Grid */
+.project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+.project-card { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2rem; transition: var(--transition); }
+.project-card:hover { border-color: var(--accent); transform: translateY(-8px); }
+.proj-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 0.4rem 0.8rem; background: var(--glass); color: var(--accent); border-radius: 8px; margin-bottom: 1.5rem; display: inline-block; }
+.proj-title { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; margin-bottom: 1rem; }
+.proj-desc { font-size: 0.95rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 1.5rem; }
+.proj-techs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tech-pill { padding: 0.3rem 0.7rem; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 6px; font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent-tertiary); }
+
+/* Live Stream */
+.live-container { background: #000; border-radius: 24px; overflow: hidden; aspect-ratio: 16/9; position: relative; border: 1px solid var(--glass-border); }
+.chat-box { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 24px; height: 450px; display: flex; flex-direction: column; }
+.chat-msgs { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.chat-msg { font-size: 0.9rem; line-height: 1.5; }
+.chat-msg .uname { color: var(--accent); font-weight: 700; margin-right: 0.5rem; }
+.chat-input-row { padding: 1rem; border-top: 1px solid var(--border); display: flex; gap: 1rem; }
+
+/* Dashboard & Admin Components */
+.page-header { margin-bottom: 2rem; }
+.page-title { font-family: var(--font-display); font-weight: 700; font-size: 2rem; }
+.card { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 20px; padding: 1.5rem; }
+.table-wrap { border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+th { background: var(--glass); padding: 1rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); }
+td { padding: 1rem; border-bottom: 1px solid var(--border); }
+
+/* Typing Effect */
+.typing-cursor { display: inline-block; width: 3px; height: 1em; background-color: var(--accent); margin-left: 2px; animation: blink 1s infinite; vertical-align: middle; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* Animations */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in { animation: fadeInUp 0.8s ease-out forwards; }
+
+/* Notifications */
+.notification { position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 2rem; border-radius: 12px; background: var(--bg-card); backdrop-filter: blur(12px); border: 1px solid var(--accent); color: var(--text); z-index: 2000; box-shadow: var(--shadow); animation: fadeInUp 0.4s ease-out; }
+
+/* Navigation */
+.nav-item { display: flex; align-items: center; padding: 1rem; color: var(--text-dim); text-decoration: none; border-radius: 12px; margin-bottom: 0.5rem; transition: var(--transition); cursor: pointer; }
+.nav-item:hover, .nav-item.active { background: var(--glass); color: var(--accent); }
+.nav-item i { margin-right: 1rem; font-size: 1.2rem; }
+
+/* Theme Toggle */
+.theme-toggle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background: var(--glass); border: 1px solid var(--border); transition: var(--transition); }
+.theme-toggle:hover { transform: rotate(15deg); border-color: var(--accent); }
+
+/* LOGIN */
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden}
+.login-page::before{content:'';position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(108,99,255,.06) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.login-card{width:420px;padding:44px;background:var(--bg2);border:1px solid var(--border);border-radius:18px;position:relative}
+.login-logo{width:58px;height:58px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:24px;color:#fff;margin:0 auto 22px}
+.login-title{font-family:var(--font-display);font-weight:700;font-size:24px;text-align:center;margin-bottom:6px}
+.login-sub{font-size:13px;color:var(--text3);text-align:center;margin-bottom:28px}
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--text3);font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.auth-link{text-align:center;font-size:13px;color:var(--text3);margin-top:22px}
+.auth-link span{color:var(--accent);cursor:pointer;font-weight:500}
+.auth-link span:hover{text-decoration:underline}
+
+/* ALERTS */
+.alert{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.alert-error{background:rgba(239,68,68,.08);color:var(--danger);border:1px solid rgba(239,68,68,.18)}
+.alert-success{background:rgba(34,197,94,.08);color:var(--success);border:1px solid rgba(34,197,94,.18)}
+.alert-info{background:rgba(108,99,255,.08);color:var(--accent);border:1px solid rgba(108,99,255,.18)}
+
+/* PAGE */
+.page-header{margin-bottom:28px}
+.page-title{font-family:var(--font-display);font-weight:700;font-size:26px;margin-bottom:5px}
+.page-desc{font-size:13px;color:var(--text3)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1}
+.modal-body{padding:24px}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:var(--bg2)}
+.close-btn{background:none;border:none;color:var(--text3);font-size:22px;cursor:pointer;line-height:1;padding:4px;transition:.15s}
+.close-btn:hover{color:var(--text)}
+
+/* MISC */
+.flex{display:flex;align-items:center;gap:10px}
+.flex-between{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.flex-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.skill-chip{padding:6px 14px;background:var(--bg4);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;color:var(--text2)}
+.skill-chip.active{border-color:rgba(108,99,255,.4);color:var(--accent);background:rgba(108,99,255,.06)}
+.sep{height:1px;background:var(--border);margin:20px 0}
+.text-sm{font-size:13px;color:var(--text2)}
+.text-xs{font-size:11px;color:var(--text3)}
+.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mt-20{margin-top:20px}.mt-24{margin-top:24px}
+.mb-8{margin-bottom:8px}.mb-12{margin-bottom:12px}.mb-16{margin-bottom:16px}.mb-24{margin-bottom:24px}
+.tag{padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;display:inline-block}
+.tag-sa{background:rgba(239,68,68,.1);color:var(--danger)}
+.tag-admin{background:rgba(245,158,11,.1);color:var(--warn)}
+.tag-user{background:rgba(108,99,255,.1);color:var(--accent)}
+
+/* NOTIFICATION */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 13px;
+    z-index: 2000;
+    max-width: 320px;
+    animation: notif-in .3s ease;
+    box-shadow: 0 8px 40px rgba(0,0,0,.4);
+    border-left: 3px solid var(--accent);
+}
+@keyframes notif-in{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+.notif-success{border-left-color: var(--success)}
+.notif-error{border-left-color: var(--danger)}
+.notif-info{border-left-color: var(--accent)}
+
+@media(max-width:768px){
+    .sidebar{transform:translateX(-280px);}.main{margin-left:0}
+    .grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr}
+    .form-row{grid-template-columns:1fr}.pub-nav-links{display:none}
+    .pub-content{padding:0 16px 60px}.hero-title{font-size:36px}</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   STORAGE
+============================================================ */
+const SK = 'bk_platform_v3';
+async function load(){
+  try{
+    const res = await fetch('/api/data');
+    const data = await res.json();
+    return data && Object.keys(data).length > 0 ? data : null;
+  }catch(e){
+    return null;
+  }
+}
+async function save(s){
+  try{
+    await fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(s)
+    });
+  }catch(e){
+    console.error('Failed to save data', e);
+  }
+}
+
+const DEF = {
+  theme: 'dark',
+  users:[{
+    id:'sa1',name:'Bal Krishna',email:'admin@balkrishna.dev',password:'Admin@2024',
+    role:'superadmin',createdAt:'2024-01-01',data:[],bio:'IT Professional & Full Stack Developer'
+  }],
+  sections:[
+    {id:'hero',type:'hero',label:'Hero Banner',visible:true,order:0,settings:{
+      title:'Bal Krishna',
+      subtitle:'Full Stack Developer & IT Professional',
+      typingEffect: true,
+      typingSpeed: 100,
+      tagline:'C · C++ · DSA · Python · React · Tailwind · Bootstrap'
+    }},
+    {id:'skills',type:'skills',label:'Skills',visible:true,order:1,settings:{
+      heading:'Technical Skills',
+      skills:[
+        {name:'C',icon:'⚙️',level:'Expert'},{name:'C++',icon:'🔧',level:'Expert'},
+        {name:'DSA',icon:'🌳',level:'Advanced'},{name:'Python',icon:'🐍',level:'Expert'},
+        {name:'React',icon:'⚛️',level:'Advanced'},{name:'Tailwind',icon:'🎨',level:'Expert'},
+        {name:'Bootstrap',icon:'🅱️',level:'Advanced'},{name:'JavaScript',icon:'🟨',level:'Advanced'},
+        {name:'Git',icon:'📦',level:'Expert'},{name:'Linux',icon:'🐧',level:'Advanced'},
+        {name:'SQL',icon:'🗄️',level:'Intermediate'},{name:'Node.js',icon:'🟩',level:'Intermediate'}
+      ]
+    }},
+    {id:'projects',type:'projects',label:'Projects',visible:true,order:2,settings:{
+      heading:'Featured Projects',
+      items:[
+        {title:'DSA Visualizer',tag:'Open Source',desc:'Interactive data structures & algorithm visualizer with step-by-step animations.',techs:['React','TypeScript','Canvas API']},
+        {title:'CMS Platform',tag:'Full Stack',desc:'Role-based content management system with admin panel and user dashboard.',techs:['Node.js','React','MongoDB','JWT']},
+        {title:'CLI Toolkit',tag:'C++',desc:'High-performance command-line utilities for system administration and file ops.',techs:['C++','Bash','CMake','POSIX']}
+      ]
+    }},
+    {id:'live',type:'live',label:'Live Stream',visible:true,order:3,settings:{
+      heading:'Live Sessions',streamUrl:'',isLive:false,
+      description:'Join my live coding, teaching & Q&A sessions!'
+    }},
+    {id:'contact',type:'contact',label:'Contact',visible:true,order:4,settings:{
+      heading:'Get In Touch',email:'admin@balkrishna.dev',
+      github:'github.com/balkrishna',linkedin:'linkedin.com/in/balkrishna'
+    }}
+  ],
+  liveViewers:0,liveMessages:[],
+  siteSettings:{
+    siteName:'Bal Krishna',tagline:'Full Stack Developer & IT Professional',
+    accentColor:'#6366f1',accentColor2:'#ec4899',accentColor3:'#14b8a6',
+    allowSignup:true,socialLinks:{github:'',linkedin:'',twitter:''},
+    footerText: '© 2024 Bal Krishna. All rights reserved.',
+    headerStyle: 'glass'
+  }
+};
+
+let ST = JSON.parse(JSON.stringify(DEF));
+
+let CU=null,VIEW='public',PAGE='overview',APAGE='dashboard',PUB_PAGE='hero';
+let MODAL=null,EDIT_SEC=null,EDIT_USER=null;
+let NOTIF=null,NT=null;
+let typingIdx = 0;
+let isDeleting = false;
+let currentText = '';
+let typingTimeout = null;
+
+/* SECURITY STATE */
+const LOCKOUT_LIMIT = 5;
+const LOCKOUT_TIME = 15 * 60 * 1000; // 15 mins
+const SESSION_TIME = 30 * 60 * 1000; // 30 mins
+
+/* ============================================================
+   UTILS
+============================================================ */
+function notify(msg,type='info'){
+  NOTIF={msg,type};render();
+  if(NT)clearTimeout(NT);
+  NT=setTimeout(()=>{NOTIF=null;renderNotif()},3600);
+}
+function persist(){save(ST);}
+function mkid(){return 'x'+Date.now().toString(36)+Math.random().toString(36).substr(2,5)}
+function inits(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().substr(0,2)}
+function qs(s){return document.querySelector(s)}
+function applyColors(){
+  const s=ST.siteSettings;
+  const r=document.documentElement.style;
+  r.setProperty('--accent',s.accentColor);
+  r.setProperty('--accent2',s.accentColor2);
+  r.setProperty('--accent3',s.accentColor3);
+  document.documentElement.setAttribute('data-theme', ST.theme || 'dark');
+}
+function toggleTheme(){
+  ST.theme = ST.theme === 'dark' ? 'light' : 'dark';
+  persist();
+  applyColors();
+  render();
+}
+function typeWriter() {
+  const hero = ST.sections.find(s => s.id === 'hero');
+  if (!hero || !hero.settings.typingEffect || VIEW !== 'public') return;
+  
+  const fullText = hero.settings.title || 'Bal Krishna';
+  const speed = hero.settings.typingSpeed || 100;
+  
+  if (!isDeleting && typingIdx <= fullText.length) {
+    currentText = fullText.substring(0, typingIdx++);
+  } else if (isDeleting && typingIdx >= 0) {
+    currentText = fullText.substring(0, typingIdx--);
+  }
+
+  const target = document.getElementById('typing-title');
+  if (target) target.innerHTML = currentText + '<span class="typing-cursor"></span>';
+
+  if (typingIdx > fullText.length) {
+    typingTimeout = setTimeout(() => { isDeleting = true; typeWriter(); }, 3000);
+  } else if (typingIdx < 0) {
+    isDeleting = false;
+    typingIdx = 0;
+    typingTimeout = setTimeout(typeWriter, speed);
+  } else {
+    typingTimeout = setTimeout(typeWriter, isDeleting ? speed / 2 : speed);
+  }
+}
+function esc(str) {
+  if (typeof str !== 'string') return str;
+  const p = document.createElement('p');
+  p.textContent = str;
+  return p.innerHTML;
+}
+
+/* ============================================================
+   RENDER ENGINE
+============================================================ */
+function render(){
+  checkSession();
+  applyColors();
+  let html='';
+  if(VIEW==='login'||VIEW==='register') html=rLogin(VIEW);
+  else if(VIEW==='public') html=rPublic();
+  else if(VIEW==='admin') html=rAdmin();
+  else if(VIEW==='dashboard') html=rUserDash();
+  const m=rModal();
+  document.getElementById('app').innerHTML=html+(m||'');
+  renderNotif();
+  
+  if(typingTimeout) clearTimeout(typingTimeout);
+  if(VIEW==='public' && PUB_PAGE === 'hero') {
+    typingIdx = 0; isDeleting = false; currentText = '';
+    typeWriter();
+  }
+}
+
+function renderNotif(){
+  const ex=document.querySelector('.notification');
+  if(ex)ex.remove();
+  if(!NOTIF)return;
+  const d=document.createElement('div');
+  d.className='notification notif-'+NOTIF.type;
+  d.textContent=NOTIF.msg;
+  document.body.appendChild(d);
+}
+
+/* ============================================================
+   AUTH
+============================================================ */
+async function hash(pw) {
+  const msgUint8 = new TextEncoder().encode(pw);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+function rLogin(mode){
+  return `
+  <div class="login-page" style="background: radial-gradient(circle at center, var(--accent-glow), var(--bg));">
+    <div class="glass-card" style="width: 420px; text-align: center;">
+      <div class="brand-logo" style="width: 60px; height: 60px; margin: 0 auto 1.5rem; font-size: 24px;">BK</div>
+      <h2 style="margin-bottom: 0.5rem; font-family: var(--font-display);">${mode==='login'?'Welcome Back':'Create Account'}</h2>
+      <p style="color: var(--text-dim); margin-bottom: 2rem; font-size: 0.9rem;">${mode==='login'?'Sign in to manage your platform':'Join the modern developer platform'}</p>
+      <div id="auth-alert"></div>
+      ${mode==='register'?`<div class="form-group" style="text-align: left;"><label class="form-label">Full Name</label><input class="form-input" id="rn" placeholder="Your name"></div>`:''}
+      <div class="form-group" style="text-align: left;"><label class="form-label">Email</label><input class="form-input" id="em" type="email" placeholder="you@email.com"></div>
+      <div class="form-group" style="text-align: left;"><label class="form-label">Password</label><input class="form-input" id="pw" type="password" placeholder="••••••••"></div>
+      ${mode==='login'
+        ?`<button class="btn btn-primary" style="width:100%;justify-content:center; padding: 1rem;" onclick="doLogin()">Sign In <i class="fas fa-arrow-right"></i></button>`
+        :`<button class="btn btn-primary" style="width:100%;justify-content:center; padding: 1rem;" onclick="doRegister()">Create Account <i class="fas fa-user-plus"></i></button>`}
+      <div style="margin: 1.5rem 0; color: var(--text-muted); font-size: 0.8rem; display: flex; align-items: center; gap: 10px;">
+        <div style="flex: 1; height: 1px; background: var(--border);"></div>
+        OR
+        <div style="flex: 1; height: 1px; background: var(--border);"></div>
+      </div>
+      <button class="btn btn-ghost" style="width:100%;justify-content:center;" onclick="guestView()">Browse Portfolio</button>
+      <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-dim);">
+        ${mode==='login'
+          ?`Don't have an account? <span style="color: var(--accent); cursor: pointer;" onclick="VIEW='register';render()">Register</span>`
+          :`Already have an account? <span style="color: var(--accent); cursor: pointer;" onclick="VIEW='login';render()">Sign in</span>`}
+      </p>
+    </div>
+  </div>`;
+}
+async function doLogin(){
+  const em=qs('#em')?.value?.trim(),pw=qs('#pw')?.value;
+  const al=qs('#auth-alert');
+  
+  // Check Lockout
+  const lock = JSON.parse(localStorage.getItem('bk_lock') || '{}');
+  if(lock.expiry && Date.now() < lock.expiry) {
+    const mins = Math.ceil((lock.expiry - Date.now()) / 60000);
+    al.innerHTML = `<div class="alert alert-error">Too many attempts. Try again in ${mins} mins.</div>`;
+    return;
+  }
+
+  if(!em||!pw){al.innerHTML='<div class="alert alert-error">Please fill all fields.</div>';return;}
+  const hpw = await hash(pw);
+  const u=ST.users.find(user=>user.email.toLowerCase()===em.toLowerCase() && (user.password===pw || user.password===hpw));
+  
+  if(!u){
+    let attempts = (lock.attempts || 0) + 1;
+    if(attempts >= LOCKOUT_LIMIT) {
+      localStorage.setItem('bk_lock', JSON.stringify({attempts: 0, expiry: Date.now() + LOCKOUT_TIME}));
+      al.innerHTML = `<div class="alert alert-error">Max attempts reached. Locked for 15 mins.</div>`;
+    } else {
+      localStorage.setItem('bk_lock', JSON.stringify({attempts, expiry: 0}));
+      al.innerHTML = `<div class="alert alert-error">Invalid credentials. (${LOCKOUT_LIMIT - attempts} attempts left)</div>`;
+    }
+    return;
+  }
+  
+  // Success
+  localStorage.removeItem('bk_lock');
+  localStorage.setItem('bk_session', JSON.stringify({uid: u.id, expiry: Date.now() + SESSION_TIME}));
+  
+  if(u.role !== 'admin' && u.role !== 'superadmin') {
+    CU=u;
+    VIEW='public';
+    notify('Logged in as '+u.name.split(' ')[0]+'. View mode only.','info');
+  } else {
+    CU=u;
+    VIEW='admin';
+    PAGE='overview';APAGE='dashboard';
+    notify('Welcome back, Admin '+u.name.split(' ')[0]+'!','success');
+  }
+  render();
+}
+function checkSession() {
+  const sess = JSON.parse(localStorage.getItem('bk_session'));
+  if(!sess) return;
+  if(Date.now() > sess.expiry) {
+    doLogout();
+    notify('Session expired. Please log in again.', 'warn');
+    return;
+  }
+  // Extend session on activity
+  sess.expiry = Date.now() + SESSION_TIME;
+  localStorage.setItem('bk_session', JSON.stringify(sess));
+  if(!CU) {
+    CU = ST.users.find(u => u.id === sess.uid);
+    if(!CU) doLogout();
+  }
+}
+async function doRegister(){
+  const nm=qs('#rn')?.value?.trim(),em=qs('#em')?.value?.trim(),pw=qs('#pw')?.value;
+  const al=qs('#auth-alert');
+  if(!nm||!em||!pw){al.innerHTML='<div class="alert alert-error">Please fill all fields.</div>';return;}
+  if(pw.length<6){al.innerHTML='<div class="alert alert-error">Min 6 characters.</div>';return;}
+  if(ST.users.find(u=>u.email.toLowerCase()===em.toLowerCase())){al.innerHTML='<div class="alert alert-error">Email taken.</div>';return;}
+  const hpw = await hash(pw);
+  const nu={id:mkid(),name:nm,email:em,password:hpw,role:'user',createdAt:new Date().toISOString().split('T')[0],data:[],bio:''};
+  ST.users.push(nu);persist();
+  CU=nu; VIEW='public'; PUB_PAGE='hero';
+  localStorage.setItem('bk_session', JSON.stringify({uid: nu.id, expiry: Date.now() + SESSION_TIME}));
+  notify('Welcome aboard! View mode active.','success');
+  render();
+}
+
+function doLogout(){
+  CU=null; VIEW='public'; PUB_PAGE='hero';
+  localStorage.removeItem('bk_session');
+  notify('Signed out safely','success');
+  render();
+}
+function guestView(){VIEW='public';render();}
+
+/* ============================================================
+   PUBLIC PORTFOLIO
+============================================================ */
+function rPublic(){
+  const secs=[...ST.sections].filter(s=>s.visible).sort((a,b)=>a.order-b.order);
+  const activeSec = secs.find(s=>s.id===PUB_PAGE) || secs[0];
+  
+  return `
+  <div style="min-height:100vh" class="animate-fade-in">
+    <nav class="pub-nav">
+      <div class="flex" style="gap:12px; cursor:pointer" onclick="PUB_PAGE='hero';render()">
+        <div class="brand-logo" style="width:38px;height:38px;font-size:14px">BK</div>
+        <span style="font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-0.5px">${ST.siteSettings.siteName}</span>
+      </div>
+      <div class="pub-nav-links">
+        ${secs.filter(s=>s.type!=='hero').map(s=>`
+          <span class="pub-nav-link ${PUB_PAGE===s.id?'active':''}" 
+                onclick="PUB_PAGE='${s.id}';render()">
+            ${s.settings?.heading||s.label}
+          </span>`).join('')}
+        <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+          ${ST.theme === 'dark' ? '☀️' : '🌙'}
+        </div>
+        ${CU ? ( (CU.role==='admin'||CU.role==='superadmin') ? `<span class="pub-nav-link cta" onclick="goDash()">Dashboard</span>` : `<span class="pub-nav-link" onclick="doLogout()">Sign Out</span>` ) : `<span class="pub-nav-link cta" onclick="VIEW='login';render()">Sign In</span>`}
+      </div>
+    </nav>
+    <div class="pub-content" style="min-height: calc(100vh - 140px); display: flex; flex-direction: column; justify-content: center;">
+      ${renderPubSection(activeSec)}
+    </div>
+    <footer style="padding: 4rem 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+      <div style="max-width: 1080px; margin: 0 auto;">
+        <div style="margin-bottom: 1.5rem; font-family: var(--font-display); font-weight: 700; color: var(--text);">${ST.siteSettings.siteName}</div>
+        <p>${ST.siteSettings.footerText || ''}</p>
+        <div class="flex" style="justify-content: center; gap: 1.5rem; margin-top: 1.5rem;">
+          ${ST.siteSettings.socialLinks?.github ? `<a href="${ST.siteSettings.socialLinks.github}" target="_blank" style="color: inherit; text-decoration: none;">GitHub</a>` : ''}
+          ${ST.siteSettings.socialLinks?.linkedin ? `<a href="${ST.siteSettings.socialLinks.linkedin}" target="_blank" style="color: inherit; text-decoration: none;">LinkedIn</a>` : ''}
+        </div>
+      </div>
+    </footer>
+  </div>`;
+}
+
+function renderPubSection(s){
+  switch(s.type){
+    case 'hero':
+      const tags=(s.settings.tagline||'').split('·').map(t=>t.trim()).filter(Boolean);
+      return `<div class="hero animate-fade-in" id="page-${s.id}">
+        <div class="section-tag">Portfolio · ${new Date().getFullYear()}</div>
+        <h1 class="hero-title" style="background: linear-gradient(to right, var(--accent), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; min-height: 1.2em;">
+          ${s.settings.typingEffect ? `<span id="typing-title"></span>` : s.settings.title}
+        </h1>
+        <div class="hero-sub" style="font-size: 1.5rem; margin-bottom: 2rem;">
+          ${s.settings.subtitle}
+        </div>
+        <div class="flex-wrap" style="justify-content:center;margin-bottom:36px; gap: 1rem;">
+          ${tags.map(t=>`<span class="skill-chip active" style="padding: 0.5rem 1.25rem; background: var(--glass); border: 1px solid var(--accent-glow);">${t}</span>`).join('')}
+        </div>
+        <div class="flex" style="justify-content:center;flex-wrap:wrap;gap:12px">
+          <button class="btn btn-primary btn-lg" onclick="PUB_PAGE='projects';render()">View Projects</button>
+          <button class="btn btn-ghost btn-lg" onclick="PUB_PAGE='contact';render()">Contact Me</button>
+        </div>
+      </div>`;
+    case 'skills':
+      return `<div class="mb-24" id="sec-${s.id}">
+        <div class="section-tag">Expertise</div>
+        <div class="section-heading">${s.settings.heading||'Skills'}</div>
+        <div class="skill-grid mt-16">
+          ${(s.settings.skills||[]).map(sk=>`
+          <div class="skill-card">
+            <div class="skill-icon">${sk.icon}</div>
+            <div class="skill-name">${sk.name}</div>
+            <div class="skill-level">${sk.level}</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+    case 'projects':
+      return `<div class="mb-24" id="sec-${s.id}">
+        <div class="section-tag">Work</div>
+        <div class="section-heading">${s.settings.heading||'Projects'}</div>
+        <div class="project-grid mt-16">
+          ${(s.settings.items||[]).map(p=>`
+          <div class="project-card">
+            <span class="proj-tag">${p.tag||'Project'}</span>
+            <div class="proj-title">${p.title}</div>
+            <div class="proj-desc">${p.desc}</div>
+            <div class="proj-techs">${(p.techs||[]).map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+    case 'live':
+      const isL=s.settings.isLive;
+      return `<div class="mb-24" id="sec-${s.id}">
+        <div class="section-tag">Live</div>
+        <div class="section-heading" style="display:flex;align-items:center;gap:12px">
+          ${s.settings.heading||'Live Stream'}
+          ${isL?`<span class="badge live"><span class="live-dot"></span> LIVE</span>`:''}
+        </div>
+        <div class="text-sm mt-8 mb-16">${s.settings.description||''}</div>
+        <div class="live-container">
+          ${isL&&s.settings.streamUrl
+            ?`<iframe src="${s.settings.streamUrl}" style="width:100%;height:100%;border:none" allowfullscreen></iframe>`
+            :`<div style="text-align:center;color:var(--text2)">
+                <div style="font-size:52px;margin-bottom:16px">${isL?'📡':'📺'}</div>
+                <div style="font-size:16px;font-weight:600;margin-bottom:8px">${isL?'Stream starting…':'No active stream'}</div>
+                <div class="text-xs">${isL?'Connecting…':'Check back later for live sessions'}</div>
+              </div>`}
+          ${isL?`<div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,.75);padding:5px 12px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:6px"><span class="live-dot" style="width:8px;height:8px"></span>${ST.liveViewers} watching</div>`:''}
+        </div>
+        ${isL?`
+        <div style="margin-top:20px;max-width:500px">
+          <div class="chat-box" style="height:280px">
+            <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text2)">Live Chat</div>
+            <div class="chat-msgs" id="pub-chat">
+              ${(ST.liveMessages||[]).slice(-40).map(m=>`<div class="chat-msg"><span class="uname">${m.uname}</span>${m.text}</div>`).join('')}
+            </div>
+            <div class="chat-input-row">
+              ${CU
+                ?`<input class="form-input" id="pub-ci" placeholder="Say something…" style="padding:7px 10px;font-size:12px" onkeydown="if(event.key==='Enter')sendPubMsg()">
+                  <button class="btn btn-primary btn-sm" onclick="sendPubMsg()">Send</button>`
+                :`<span class="text-xs" style="padding:6px 0"><span style="color:var(--accent);cursor:pointer" onclick="VIEW='login';render()">Sign in</span> to chat</span>`}
+            </div>
+          </div>
+        </div>`:''
+        }
+      </div>`;
+    case 'contact':
+      return `<div class="mb-24" id="sec-${s.id}">
+        <div class="section-tag">Contact</div>
+        <div class="section-heading">${s.settings.heading||'Get In Touch'}</div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:28px;max-width:480px;margin-top:16px">
+          ${s.settings.email?`<div class="mb-16"><div class="text-xs" style="margin-bottom:4px">Email</div><div style="font-size:15px;color:var(--accent)">${s.settings.email}</div></div>`:''}
+          <div class="flex-wrap">
+            ${s.settings.github?`<a href="https://${s.settings.github}" target="_blank" style="text-decoration:none"><button class="btn btn-secondary btn-sm">GitHub →</button></a>`:''}
+            ${s.settings.linkedin?`<a href="https://${s.settings.linkedin}" target="_blank" style="text-decoration:none"><button class="btn btn-secondary btn-sm">LinkedIn →</button></a>`:''}
+          </div>
+          <div class="mt-16">
+            <button class="btn btn-primary" onclick="${CU?'goDash()':'VIEW=\'login\';render()'}">
+              ${CU?'Go to Dashboard →':'Login to Platform →'}
+            </button>
+          </div>
+        </div>
+      </div>`;
+    case 'custom':
+      return `<div class="mb-24" id="sec-${s.id}">
+        <div class="section-tag">More</div>
+        <div class="section-heading">${s.label}</div>
+        <div class="text-sm mt-12" style="line-height:1.8;white-space:pre-line">${s.settings?.content||''}</div>
+      </div>`;
+    default: return '';
+  }
+}
+
+function scrollSec(id){const e=document.getElementById('sec-'+id);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});}
+function goDash(){
+  if(CU && (CU.role==='admin'||CU.role==='superadmin')) {
+    VIEW='admin';
+  } else {
+    VIEW='public';
+    notify('Dashboard is for administrators only.','info');
+  }
+  render();
+}
+function sendPubMsg(){
+  const i=qs('#pub-ci');if(!i||!i.value.trim())return;
+  if(!ST.liveMessages)ST.liveMessages=[];
+  ST.liveMessages.push({id:mkid(),uid:CU.id,uname:CU.name.split(' ')[0],text:i.value.trim(),t:Date.now()});
+  persist();i.value='';render();
+  setTimeout(()=>{const c=qs('#pub-chat');if(c)c.scrollTop=c.scrollHeight;},50);
+}
+
+/* ============================================================
+   USER DASHBOARD
+============================================================ */
+function rUserDash(){
+  if(!CU||(CU.role!=='admin'&&CU.role!=='superadmin')){
+    setTimeout(()=>{VIEW='public';render();},0);
+    return '<div class="alert alert-error">Access Denied.</div>';
+  }
+  return `<div class="app">${rSidebar('user')}<div class="main">${rTopbar('My Dashboard')}<div class="content">${rUserPage()}</div></div></div>`;
+}
+function rUserPage(){
+  if(PAGE==='overview') return rUserOverview();
+  if(PAGE==='my-data') return rUserData();
+  if(PAGE==='profile') return rUserProfile();
+  return rUserOverview();
+}
+function rUserOverview(){
+  const ud=CU.data||[];
+  return `
+  <div class="page-header"><div class="page-title">Hello, ${CU.name.split(' ')[0]} 👋</div><div class="page-desc">Welcome to your personal dashboard</div></div>
+  <div class="grid-3 mb-24">
+    <div class="stat-card v1"><div class="stat-label">Data Records</div><div class="stat-val v1">${ud.length}</div></div>
+    <div class="stat-card v2"><div class="stat-label">Account Role</div><div class="stat-val v2" style="font-size:18px;margin-top:6px">${CU.role}</div></div>
+    <div class="stat-card v3"><div class="stat-label">Member Since</div><div class="stat-val v3" style="font-size:15px;margin-top:8px">${CU.createdAt}</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">Quick Actions</div></div>
+    <div class="flex-wrap">
+      <button class="btn btn-primary" onclick="PAGE='my-data';render()">+ Add Data Record</button>
+      <button class="btn btn-secondary" onclick="PAGE='profile';render()">Edit Profile</button>
+      <button class="btn btn-success" onclick="expMyData()">⬇ Export My Data (Excel)</button>
+      <button class="btn btn-secondary" onclick="VIEW='public';render()">🌐 View Portfolio</button>
+    </div>
+  </div>`;
+}
+function rUserData(){
+  const ud=CU.data||[];
+  return `
+  <div class="page-header">
+    <div class="flex-between">
+      <div><div class="page-title">My Data</div><div class="page-desc">Store and manage your personal records</div></div>
+      <div class="flex">
+        <button class="btn btn-success btn-sm" onclick="expMyData()">⬇ Excel</button>
+        <button class="btn btn-primary btn-sm" onclick="MODAL='add-data';render()">+ Add</button>
+      </div>
+    </div>
+  </div>
+  ${ud.length===0
+    ?`<div class="card" style="text-align:center;padding:50px"><div style="font-size:44px;margin-bottom:14px">📭</div><div class="card-title mb-8">No records yet</div><div class="text-sm mb-20">Add your first data record</div><button class="btn btn-primary" onclick="MODAL='add-data';render()">+ Add First Record</button></div>`
+    :`<div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>Title</th><th>Category</th><th>Notes</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody>${ud.map((d,i)=>`<tr>
+          <td class="text-xs">${i+1}</td>
+          <td style="font-weight:500">${d.title}</td>
+          <td><span class="badge info">${d.cat||'General'}</span></td>
+          <td class="text-xs" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.notes||'—'}</td>
+          <td class="text-xs">${d.date||''}</td>
+          <td><button class="btn btn-danger btn-sm" onclick="delMyData('${d.id}')">Delete</button></td>
+        </tr>`).join('')}</tbody>
+      </table></div>`}`;
+}
+function rUserProfile(){
+  return `
+  <div class="page-header"><div class="page-title">Profile Settings</div><div class="page-desc">Update your account details</div></div>
+  <div class="card" style="max-width:480px">
+    <div class="flex mb-20">
+      <div class="avatar" style="width:56px;height:56px;font-size:20px">${CU.name.split(' ').map(w=>w[0]).join('').toUpperCase().substr(0,2)}</div>
+      <div>
+        <div style="font-size:16px;font-weight:600">${CU.name}</div>
+        <div class="text-xs mt-8">${CU.email}</div>
+        <span class="tag ${CU.role==='superadmin'?'tag-sa':CU.role==='admin'?'tag-admin':'tag-user'} mt-8">${CU.role}</span>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="pn" value="${CU.name}"></div>
+    <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input form-textarea" id="pb">${CU.bio||''}</textarea></div>
+    <div class="form-group"><label class="form-label">New Password (blank = keep current)</label><input class="form-input" id="pp" type="password" placeholder="Min 6 chars"></div>
+    <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+  </div>`;
+}
+function expMyData(){xlsExport((CU.data||[]).map(r=>({Title:r.title,Category:r.cat||'',Notes:r.notes||'',Date:r.date||''})),'my_data_'+CU.name.replace(/ /g,'_'));}
+function delMyData(id){
+  const userObj=ST.users.find(u=>u.id===CU.id);if(!userObj)return;
+  userObj.data=(userObj.data||[]).filter(d=>d.id!==id);CU=userObj;persist();notify('Record deleted');render();
+}
+function saveProfile(){
+  const nm=qs('#pn')?.value?.trim(),bio=qs('#pb')?.value?.trim(),pw=qs('#pp')?.value;
+  if(!nm){notify('Name required','error');return;}
+  const u=ST.users.find(u=>u.id===CU.id);if(!u)return;
+  u.name=nm;u.bio=bio||'';
+  if(pw&&pw.length>=6)u.password=pw;
+  CU=u;persist();notify('Profile updated! ✓','success');render();
+}
+
+/* ============================================================
+   ADMIN DASHBOARD
+============================================================ */
+function rAdmin(){
+  if(!CU||(CU.role!=='admin'&&CU.role!=='superadmin')){
+    setTimeout(()=>{VIEW='public';render();},0);
+    return '<div class="alert alert-error">Access Denied. Redirecting...</div>';
+  }
+  return `<div class="app">${rSidebar('admin')}<div class="main">${rTopbar('Admin Panel')}<div class="content">${rAdminPage()}</div></div></div>`;
+}
+function rAdminPage(){
+  if(APAGE==='dashboard') return rAdminOverview();
+  if(APAGE==='users') return rAdminUsers();
+  if(APAGE==='admins') return rAdminAdmins();
+  if(APAGE==='sections') return rAdminSections();
+  if(APAGE==='live') return rAdminLive();
+  if(APAGE==='settings') return rAdminSettings();
+  return rAdminOverview();
+}
+function rAdminOverview(){
+  const total=ST.users.filter(u=>u.role!=='superadmin').length;
+  const admins=ST.users.filter(u=>u.role==='admin').length;
+  const totalRecs=ST.users.reduce((a,u)=>a+(u.data||[]).length,0);
+  const ls=ST.sections.find(s=>s.type==='live');
+  return `
+  <div class="page-header"><div class="page-title">Dashboard</div><div class="page-desc">Platform overview — welcome back, ${CU.name.split(' ')[0]}</div></div>
+  <div class="grid-4 mb-24">
+    <div class="stat-card v1"><div class="stat-label">Total Users</div><div class="stat-val v1">${total}</div></div>
+    <div class="stat-card v2"><div class="stat-label">Admins</div><div class="stat-val v2">${admins+1}</div></div>
+    <div class="stat-card v3"><div class="stat-label">Data Records</div><div class="stat-val v3">${totalRecs}</div></div>
+    <div class="stat-card v4"><div class="stat-label">Live</div><div class="stat-val v4" style="font-size:16px;margin-top:8px">${ls?.settings?.isLive?'🔴 LIVE':'⭕ Offline'}</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Recent Users</div><button class="btn btn-secondary btn-sm" onclick="APAGE='users';render()">View All</button></div>
+      ${ST.users.slice(-6).reverse().map(u=>`
+      <div class="flex-between" style="padding:9px 0;border-bottom:1px solid var(--border)">
+        <div class="flex">
+          <div class="avatar sm">${inits(u.name)}</div>
+          <div>
+            <div style="font-size:13px;font-weight:500">${u.name}</div>
+            <div class="text-xs">${u.email}</div>
+          </div>
+        </div>
+        <span class="tag ${u.role==='superadmin'?'tag-sa':u.role==='admin'?'tag-admin':'tag-user'}">${u.role}</span>
+      </div>`).join('')}
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Quick Actions</div></div>
+      <div style="display:grid;gap:8px">
+        <button class="btn btn-primary" onclick="APAGE='sections';render()">📐 Manage Sections</button>
+        <button class="btn btn-secondary" onclick="APAGE='live';render()">📡 Live Stream Control</button>
+        <button class="btn btn-secondary" onclick="APAGE='users';render()">👥 Manage Users</button>
+        <button class="btn btn-secondary" onclick="APAGE='admins';render()">🛡️ Manage Admins</button>
+        <button class="btn btn-secondary" onclick="APAGE='settings';render()">⚙️ Site Settings</button>
+        <button class="btn btn-success" onclick="expAllUsers()">⬇ Export All Users (Excel)</button>
+      </div>
+    </div>
+  </div>`;
+}
+function rAdminUsers(){
+  const users=ST.users.filter(u=>u.role!=='superadmin'||CU.role==='superadmin');
+  return `
+  <div class="page-header">
+    <div class="flex-between">
+      <div><div class="page-title">User Management</div><div class="page-desc">${users.length} registered users</div></div>
+      <div class="flex">
+        <button class="btn btn-success btn-sm" onclick="expAllUsers()">⬇ Excel</button>
+        <button class="btn btn-primary btn-sm" onclick="MODAL='add-user';render()">+ Add User</button>
+      </div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Records</th><th>Joined</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${users.map((u,i)=>`<tr>
+          <td class="text-xs">${i+1}</td>
+          <td><div class="flex"><div class="avatar sm">${inits(u.name)}</div><span style="font-weight:500">${u.name}</span></div></td>
+          <td class="text-sm">${u.email}</td>
+          <td><span class="tag ${u.role==='superadmin'?'tag-sa':u.role==='admin'?'tag-admin':'tag-user'}">${u.role}</span></td>
+          <td><span class="badge info">${(u.data||[]).length}</span></td>
+          <td class="text-xs">${u.createdAt||'—'}</td>
+          <td><div class="flex">
+            <button class="btn btn-secondary btn-sm" onclick="viewUData('${u.id}')">Data</button>
+            <button class="btn btn-success btn-sm" onclick="expUData('${u.id}')">Excel</button>
+            ${u.id!==CU.id&&u.role!=='superadmin'?`<button class="btn btn-danger btn-sm" onclick="delUser('${u.id}')">Del</button>`:''}
+          </div></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+function expAllUsers(){
+  xlsExport(ST.users.map(u=>({Name:u.name,Email:u.email,Role:u.role,'Records':(u.data||[]).length,'Joined':u.createdAt||'',Bio:u.bio||''})),'all_users_platform');
+}
+function delUser(id){
+  if(id===CU.id){notify("Can't delete your own account",'error');return;}
+  ST.users=ST.users.filter(u=>u.id!==id);persist();notify('User deleted','success');render();
+}
+function viewUData(id){EDIT_USER=ST.users.find(u=>u.id===id);MODAL='view-udata';render();}
+function expUData(id){
+  const u=ST.users.find(u=>u.id===id);if(!u)return;
+  xlsExport((u.data||[]).map(r=>({Title:r.title,Category:r.cat||'',Notes:r.notes||'',Date:r.date||''})),'data_'+u.name.replace(/ /g,'_'));
+}
+function rAdminAdmins(){
+  const admins=ST.users.filter(u=>u.role==='admin'||u.role==='superadmin');
+  const normalUsers=ST.users.filter(u=>u.role==='user');
+  return `
+  <div class="page-header">
+    <div class="flex-between">
+      <div><div class="page-title">Admin Management</div><div class="page-desc">Create and manage admin accounts</div></div>
+      <button class="btn btn-primary btn-sm" onclick="MODAL='add-user';render()">+ Create Admin</button>
+    </div>
+  </div>
+  <div class="grid-2 mb-24">
+    ${admins.map(u=>`
+    <div class="card">
+      <div class="flex-between">
+        <div class="flex">
+          <div class="avatar">${inits(u.name)}</div>
+          <div><div style="font-size:14px;font-weight:600">${u.name}</div><div class="text-xs">${u.email}</div></div>
+        </div>
+        <span class="tag ${u.role==='superadmin'?'tag-sa':'tag-admin'}">${u.role}</span>
+      </div>
+      ${u.role!=='superadmin'&&CU.role==='superadmin'?`<div class="mt-12"><button class="btn btn-danger btn-sm" onclick="demote('${u.id}')">Remove Admin</button></div>`:''}
+    </div>`).join('')}
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">Promote User to Admin</div></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Select User</label>
+        <select class="form-input" id="pu-sel">
+          <option value="">— Select User —</option>
+          ${normalUsers.map(u=>`<option value="${u.id}">${u.name} (${u.email})</option>`).join('')}
+        </select>
+      </div>
+      <div style="display:flex;align-items:flex-end;padding-bottom:16px">
+        <button class="btn btn-warn" onclick="promoteU()">Promote to Admin</button>
+      </div>
+    </div>
+  </div>`;
+}
+function promoteU(){
+  const id=qs('#pu-sel')?.value;if(!id){notify('Select a user','error');return;}
+  const u=ST.users.find(u=>u.id===id);if(!u)return;
+  u.role='admin';persist();notify(u.name+' promoted to Admin!','success');render();
+}
+function demote(id){
+  const u=ST.users.find(u=>u.id===id);if(!u)return;
+  u.role='user';persist();notify(u.name+' demoted to User');render();
+}
+function rAdminSections(){
+  const secs=[...ST.sections].sort((a,b)=>a.order-b.order);
+  return `
+  <div class="page-header">
+    <div class="flex-between">
+      <div><div class="page-title">Section Manager</div><div class="page-desc">Control and order portfolio sections</div></div>
+      <button class="btn btn-primary btn-sm" onclick="MODAL='add-sec';render()">+ Add Section</button>
+    </div>
+  </div>
+  <div id="secs-list">
+    ${secs.map((s,i)=>`
+    <div class="section-block">
+      <div class="section-drag">⠿</div>
+      <div class="section-content">
+        <div class="flex-between">
+          <div>
+            <span class="type-badge">${s.type}</span>
+            <div style="font-size:14px;font-weight:600;margin-top:3px">${s.label}</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" ${s.visible?'checked':''} onchange="toggleSec('${s.id}',this.checked)">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+        <div class="section-actions">
+          <button class="btn btn-secondary btn-sm" onclick="editSec('${s.id}')">✏ Edit</button>
+          ${i>0?`<button class="btn btn-secondary btn-sm" onclick="moveSec('${s.id}',-1)">↑ Up</button>`:''}
+          ${i<secs.length-1?`<button class="btn btn-secondary btn-sm" onclick="moveSec('${s.id}',1)">↓ Down</button>`:''}
+          ${s.type==='custom'?`<button class="btn btn-danger btn-sm" onclick="delSec('${s.id}')">Delete</button>`:''}
+        </div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+function toggleSec(id,v){const s=ST.sections.find(s=>s.id===id);if(!s)return;s.visible=v;persist();notify(v?'Section shown':'Section hidden');}
+function moveSec(id,dir){
+  const arr=[...ST.sections].sort((a,b)=>a.order-b.order);
+  const idx=arr.findIndex(s=>s.id===id);const ni=idx+dir;
+  if(ni<0||ni>=arr.length)return;
+  [arr[idx].order,arr[ni].order]=[arr[ni].order,arr[idx].order];
+  ST.sections=arr;persist();render();
+}
+function editSec(id){EDIT_SEC=ST.sections.find(s=>s.id===id);MODAL='edit-sec';render();}
+function delSec(id){ST.sections=ST.sections.filter(s=>s.id!==id);persist();notify('Section deleted');render();}
+function rAdminLive(){
+  const ls=ST.sections.find(s=>s.type==='live');
+  const isL=ls?.settings?.isLive;
+  const msgs=ST.liveMessages||[];
+  return `
+  <div class="page-header">
+    <div class="flex-between">
+      <div><div class="page-title">Live Stream Control</div><div class="page-desc">Manage your live sessions</div></div>
+      <span class="badge ${isL?'live':'info'}">${isL?'🔴 LIVE':'⭕ Offline'}</span>
+    </div>
+  </div>
+  <div class="grid-3 mb-24">
+    <div class="stat-card v3"><div class="stat-label">Live Viewers</div><div class="stat-val v3">${isL?ST.liveViewers:0}</div></div>
+    <div class="stat-card v2"><div class="stat-label">Chat Messages</div><div class="stat-val v2">${msgs.length}</div></div>
+    <div class="stat-card v1"><div class="stat-label">Viewer Capacity</div><div class="stat-val v1" style="font-size:16px;margin-top:6px">${Math.round(ST.liveViewers/10)}%</div></div>
+  </div>
+  <div class="grid-2 mb-16">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Stream Settings</div></div>
+      <div class="form-group">
+        <label class="form-label">Stream Embed URL</label>
+        <input class="form-input" id="s-url" placeholder="https://www.youtube.com/embed/..." value="${ls?.settings?.streamUrl||''}">
+        <div class="text-xs mt-8">YouTube/Twitch embed URL or direct stream URL</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Session Description</label>
+        <input class="form-input" id="s-desc" value="${ls?.settings?.description||''}" placeholder="What's this session about?">
+      </div>
+      <div class="flex">
+        <button class="btn ${isL?'btn-danger':'btn-success'}" onclick="toggleLive()">${isL?'⏹ End Stream':'▶ Go Live'}</button>
+        <button class="btn btn-secondary" onclick="saveStreamCfg()">Save Config</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Viewer Simulation</div></div>
+      <div class="text-sm mb-12">Simulate live viewer count for testing</div>
+      <div class="flex-between mb-12">
+        <span>Viewers: <strong>${ST.liveViewers}</strong></span>
+        <div class="flex">
+          <button class="btn btn-secondary btn-sm" onclick="adjV(-5)">-5</button>
+          <button class="btn btn-secondary btn-sm" onclick="adjV(-1)">-1</button>
+          <button class="btn btn-secondary btn-sm" onclick="adjV(1)">+1</button>
+          <button class="btn btn-secondary btn-sm" onclick="adjV(10)">+10</button>
+          <button class="btn btn-secondary btn-sm" onclick="adjV(50)">+50</button>
+        </div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.min(ST.liveViewers/10,100)}%"></div></div>
+      <div class="text-xs mt-8">${ST.liveViewers} / 1000 capacity</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div><div class="card-title">Chat Monitor</div><div class="card-subtitle">${msgs.length} messages</div></div>
+      <button class="btn btn-danger btn-sm" onclick="clearChat()">Clear All</button>
+    </div>
+    <div style="max-height:320px;overflow-y:auto" id="admin-chat">
+      ${msgs.length===0
+        ?`<div class="text-sm" style="text-align:center;padding:40px;color:var(--text3)">No messages</div>`
+        :msgs.slice(-60).map(m=>`
+        <div class="flex-between" style="padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <div><span style="color:var(--accent);font-weight:600;margin-right:6px">${m.uname}:</span>${m.text}</div>
+          <button class="btn btn-danger btn-sm" style="padding:2px 6px;font-size:10px" onclick="delMsg('${m.id}')">✕</button>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+function toggleLive(){
+  const ls=ST.sections.find(s=>s.type==='live');if(!ls)return;
+  ls.settings.isLive=!ls.settings.isLive;
+  if(ls.settings.isLive)ST.liveViewers=Math.floor(Math.random()*60)+10;
+  persist();notify(ls.settings.isLive?'Stream is LIVE 🔴':'Stream ended','success');render();
+}
+function saveStreamCfg(){
+  const ls=ST.sections.find(s=>s.type==='live');if(!ls)return;
+  ls.settings.streamUrl=qs('#s-url')?.value?.trim()||'';
+  ls.settings.description=qs('#s-desc')?.value?.trim()||ls.settings.description;
+  persist();notify('Stream config saved!','success');
+}
+function clearChat(){ST.liveMessages=[];persist();notify('Chat cleared');render();}
+function delMsg(id){ST.liveMessages=(ST.liveMessages||[]).filter(m=>m.id!==id);persist();render();}
+function adjV(n){ST.liveViewers=Math.max(0,ST.liveViewers+n);persist();render();}
+function rAdminSettings(){
+  const ss=ST.siteSettings;
+  return `
+  <div class="page-header"><div class="page-title">Site Settings</div><div class="page-desc">Customize your platform</div></div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-title">General</div></div>
+      <div class="form-group"><label class="form-label">Site Name</label><input class="form-input" id="ss-name" value="${ss.siteName}"></div>
+      <div class="form-group"><label class="form-label">Tagline</label><input class="form-input" id="ss-tag" value="${ss.tagline}"></div>
+      <div class="form-group">
+        <label class="form-label">Allow Public Registration</label>
+        <div class="flex mt-8">
+          <label class="toggle"><input type="checkbox" id="ss-reg" ${ss.allowSignup?'checked':''}><span class="toggle-track"></span></label>
+          <span class="text-sm">New users can self-register</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Theme & Layout</div></div>
+      <div class="form-group"><label class="form-label">Footer Text</label><input class="form-input" id="ss-footer" value="${ss.footerText || ''}"></div>
+      <div class="form-group">
+        <label class="form-label">Header Style</label>
+        <select class="form-input" id="ss-header">
+          <option value="glass" ${ss.headerStyle==='glass'?'selected':''}>Glassmorphism</option>
+          <option value="solid" ${ss.headerStyle==='solid'?'selected':''}>Solid Color</option>
+          <option value="hidden" ${ss.headerStyle==='hidden'?'selected':''}>Hidden</option>
+        </select>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Theme Colors</div></div>
+      <div class="form-group">
+        <label class="form-label">Primary Accent</label>
+        <div class="flex"><input type="color" id="c1" value="${ss.accentColor}" style="width:44px;height:36px;border:1px solid var(--border);background:none;cursor:pointer;padding:2px;border-radius:6px"><input class="form-input" id="c1h" value="${ss.accentColor}" style="flex:1" oninput="qs('#c1').value=this.value"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Secondary Accent</label>
+        <div class="flex"><input type="color" id="c2" value="${ss.accentColor2}" style="width:44px;height:36px;border:1px solid var(--border);background:none;cursor:pointer;padding:2px;border-radius:6px"><input class="form-input" id="c2h" value="${ss.accentColor2}" style="flex:1" oninput="qs('#c2').value=this.value"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Social Links</div></div>
+      <div class="form-group"><label class="form-label">GitHub URL</label><input class="form-input" id="sg" value="${ss.socialLinks?.github||''}" placeholder="https://github.com/..."></div>
+      <div class="form-group"><label class="form-label">LinkedIn URL</label><input class="form-input" id="sl" value="${ss.socialLinks?.linkedin||''}" placeholder="https://linkedin.com/..."></div>
+    </div>
+    <div class="card" style="grid-column: span 2; display:flex; gap:10px; justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="resetSettings()">↺ Reset</button>
+      <button class="btn btn-primary btn-lg" onclick="saveSettings()">💾 Save All Settings</button>
+    </div>
+  </div>`;
+}
+function saveSettings(){
+  const ss=ST.siteSettings;
+  ss.siteName=qs('#ss-name')?.value?.trim()||ss.siteName;
+  ss.tagline=qs('#ss-tag')?.value?.trim()||ss.tagline;
+  ss.allowSignup=qs('#ss-reg')?.checked??ss.allowSignup;
+  ss.footerText=qs('#ss-footer')?.value?.trim()||'';
+  ss.headerStyle=qs('#ss-header')?.value||'glass';
+  ss.accentColor=qs('#c1')?.value||ss.accentColor;
+  ss.accentColor2=qs('#c2')?.value||ss.accentColor2;
+  ss.socialLinks={github:qs('#sg')?.value||'',linkedin:qs('#sl')?.value||''};
+  applyColors();persist();notify('Settings saved! ✓','success');
+  render();
+}
+function resetSettings(){
+  if(!confirm('Reset all settings to defaults?'))return;
+  ST.siteSettings=JSON.parse(JSON.stringify(DEF.siteSettings));
+  applyColors();persist();notify('Settings reset');render();
+}
+
+/* ============================================================
+   SIDEBAR + TOPBAR
+============================================================ */
+function rSidebar(type){
+  const isA=type==='admin';
+  const nav=isA?[
+    {lbl:'Main',items:[
+      {id:'dashboard',ic:'🏠',lb:'Dashboard'},
+      {id:'users',ic:'👥',lb:'Users'},
+      {id:'admins',ic:'🛡️',lb:'Admins'},
+    ]},
+    {lbl:'Content',items:[
+      {id:'sections',ic:'📐',lb:'Sections'},
+      {id:'live',ic:'📡',lb:'Live Stream'},
+    ]},
+    {lbl:'System',items:[
+      {id:'settings',ic:'⚙️',lb:'Site Settings'},
+    ]}
+  ]:[
+    {lbl:'My Account',items:[
+      {id:'overview',ic:'🏠',lb:'Overview'},
+      {id:'my-data',ic:'📊',lb:'My Data'},
+      {id:'profile',ic:'👤',lb:'Profile'},
+    ]}
+  ];
+  const curr=isA?APAGE:PAGE;
+  return `
+  <aside class="sidebar">
+    <div class="sidebar-brand" style="border-bottom-color: var(--border);">
+      <div class="brand-logo">BK</div>
+      <div class="brand-name" style="font-family: var(--font-display);">${ST.siteSettings.siteName}</div>
+      <div class="brand-role" style="color: var(--text-dim); font-size: 0.7rem;">${ST.siteSettings.tagline}</div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 1rem 0;">
+      ${nav.map(g=>`
+      <div class="nav-section">
+        <div class="nav-label" style="font-size: 0.7rem; letter-spacing: 2px; color: var(--text-muted);">${g.lbl}</div>
+        ${g.items.map(item=>`
+        <div class="nav-item ${curr===item.id?'active':''}" onclick="${isA?`APAGE='${item.id}';render()`:`PAGE='${item.id}';render()`}">
+          <span class="nav-icon">${item.ic}</span><span style="font-size: 0.9rem; font-weight: 500;">${item.lb}</span>
+        </div>`).join('')}
+      </div>`).join('')}
+    </div>
+    <div class="nav-section" style="border-top: 1px solid var(--border); padding-top: 1rem;">
+      <div class="nav-item" onclick="toggleTheme()">
+        <span class="nav-icon">${ST.theme === 'dark' ? '☀️' : '🌙'}</span>
+        <span style="font-size: 0.9rem;">${ST.theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+      </div>
+      <div class="nav-item" onclick="VIEW='public';render()">
+        <span class="nav-icon">🌐</span><span style="font-size: 0.9rem;">View Portfolio</span>
+      </div>
+    </div>
+    <div class="sidebar-footer" style="border-top-color: var(--border); background: var(--glass);">
+      <div class="user-chip">
+        <div class="avatar">${inits(CU.name)}</div>
+        <div class="user-info">
+          <div class="uname" style="color: var(--text);">${CU.name.split(' ')[0]}</div>
+          <span class="role-badge">${CU.role}</span>
+        </div>
+        <button class="logout-btn" onclick="doLogout()" title="Sign Out">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </aside>`;
+}
+function rTopbar(title){
+  const ls=ST.sections.find(s=>s.type==='live');
+  const isL=ls?.settings?.isLive;
+  return `
+  <div class="topbar" style="background: var(--bg-card); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom-color: var(--border);">
+    <div class="topbar-title" style="font-family: var(--font-display); font-weight: 700; color: var(--accent);">${title}</div>
+    <div class="topbar-right">
+      ${isL?`<span class="badge live" style="background: var(--accent-glow); color: white;"><span class="live-dot" style="width:8px;height:8px; background: white;"></span> LIVE</span>`:''}
+      <span class="badge online" style="background: var(--glass); color: var(--accent-tertiary);">● Online</span>
+      <div class="flex" style="background: var(--glass); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border);">
+        <div class="avatar sm" style="width: 24px; height: 24px; font-size: 10px;">${inits(CU.name)}</div>
+        <span class="text-sm" style="font-weight: 500;">${CU.name}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   MODALS
+============================================================ */
+function rModal(){
+  if(!MODAL) return '';
+  let inner='';
+
+  if(MODAL==='add-data'){
+    inner=`
+    <div class="modal-header"><div class="card-title">Add Data Record</div><button class="close-btn" onclick="closeM()">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="dt" placeholder="Record title" autofocus></div>
+      <div class="form-group"><label class="form-label">Category</label><input class="form-input" id="dc" placeholder="General, Work, Personal…"></div>
+      <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input form-textarea" id="dn" placeholder="Additional notes…"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeM()">Cancel</button><button class="btn btn-primary" onclick="saveData()">Add Record</button></div>`;
+  }
+
+  if(MODAL==='add-user'){
+    inner=`
+    <div class="modal-header"><div class="card-title">Add New User</div><button class="close-btn" onclick="closeM()">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="un"></div>
+      <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="ue" type="email"></div>
+      <div class="form-group"><label class="form-label">Password *</label><input class="form-input" id="up" type="password" placeholder="Min 6 chars"></div>
+      <div class="form-group"><label class="form-label">Role</label>
+        <select class="form-input" id="ur">
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeM()">Cancel</button><button class="btn btn-primary" onclick="saveUser()">Create User</button></div>`;
+  }
+
+  if(MODAL==='view-udata'&&EDIT_USER){
+    const ud=EDIT_USER.data||[];
+    inner=`
+    <div class="modal-header"><div><div class="card-title">${EDIT_USER.name}'s Data</div><div class="text-xs">${ud.length} records</div></div><button class="close-btn" onclick="closeM()">×</button></div>
+    <div class="modal-body">
+      ${ud.length===0?'<div class="text-sm" style="text-align:center;padding:28px;color:var(--text3)">No records yet</div>':
+        `<div class="table-wrap"><table><thead><tr><th>Title</th><th>Category</th><th>Notes</th><th>Date</th></tr></thead>
+        <tbody>${ud.map(d=>`<tr><td>${d.title}</td><td>${d.cat||'—'}</td><td class="text-xs">${d.notes||'—'}</td><td class="text-xs">${d.date||'—'}</td></tr>`).join('')}</tbody>
+        </table></div>`}
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" onclick="expUData('${EDIT_USER.id}')">Export Excel</button>
+      <button class="btn btn-secondary" onclick="closeM()">Close</button>
+    </div>`;
+  }
+
+  if(MODAL==='add-sec'){
+    inner=`
+    <div class="modal-header"><div class="card-title">Add Custom Section</div><button class="close-btn" onclick="closeM()">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Section Label *</label><input class="form-input" id="sl-i" placeholder="About Me, Blog, FAQ, Gallery…"></div>
+      <div class="form-group"><label class="form-label">Content</label><textarea class="form-input form-textarea" id="sc-i" placeholder="Write your section content here…" style="min-height:120px"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeM()">Cancel</button><button class="btn btn-primary" onclick="saveSec()">Add Section</button></div>`;
+  }
+
+  if(MODAL==='edit-sec'&&EDIT_SEC){
+    const s=EDIT_SEC;
+    let f='';
+    if(s.type==='hero') f=`
+      <div class="form-group"><label class="form-label">Display Name</label><input class="form-input" id="eh-t" value="${s.settings.title||''}"></div>
+      <div class="form-group"><label class="form-label">Subtitle</label><input class="form-input" id="eh-s" value="${s.settings.subtitle||''}"></div>
+      <div class="form-group">
+        <label class="form-label">Typing Effect</label>
+        <div class="flex mt-8">
+          <label class="toggle"><input type="checkbox" id="eh-te" ${s.settings.typingEffect?'checked':''}><span class="toggle-track"></span></label>
+          <span class="text-sm">Enable animated typing</span>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Typing Speed (ms)</label><input class="form-input" type="number" id="eh-tsp" value="${s.settings.typingSpeed||100}"></div>
+      <div class="form-group"><label class="form-label">Tech tags (separated by ·)</label><input class="form-input" id="eh-g" value="${s.settings.tagline||''}"></div>`;
+    else if(s.type==='custom') f=`<div class="form-group"><label class="form-label">Content</label><textarea class="form-input form-textarea" id="ec-c" style="min-height:160px">${s.settings.content||''}</textarea></div>`;
+    else if(s.type==='contact') f=`
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="ec-e" value="${s.settings.email||''}"></div>
+      <div class="form-group"><label class="form-label">GitHub</label><input class="form-input" id="ec-g" value="${s.settings.github||''}"></div>
+      <div class="form-group"><label class="form-label">LinkedIn</label><input class="form-input" id="ec-l" value="${s.settings.linkedin||''}"></div>`;
+    else if(s.type==='live') f=`
+      <div class="form-group"><label class="form-label">Section Heading</label><input class="form-input" id="el-h" value="${s.settings.heading||''}"></div>
+      <div class="form-group"><label class="form-label">Description</label><input class="form-input" id="el-d" value="${s.settings.description||''}"></div>
+      <div class="form-group"><label class="form-label">Stream Embed URL</label><input class="form-input" id="el-u" value="${s.settings.streamUrl||''}" placeholder="https://www.youtube.com/embed/..."></div>`;
+    else if(s.type==='skills') f=`<div class="alert alert-info">Skills editing: go to the section label field below. Full skill editing via code/JSON for now.</div>`;
+    else if(s.type==='projects') f=`<div class="alert alert-info">Projects editing: full UI editor coming soon. Update section label below.</div>`;
+    else f=`<div class="alert alert-info">This section type has built-in settings. Toggle visibility from the sections list.</div>`;
+    inner=`
+    <div class="modal-header"><div class="card-title">Edit: ${s.label}</div><button class="close-btn" onclick="closeM()">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Section Label</label><input class="form-input" id="es-lbl" value="${s.label}"></div>
+      ${f}
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeM()">Cancel</button><button class="btn btn-primary" onclick="saveSecEdit()">Save Changes</button></div>`;
+  }
+
+  return `<div class="modal-overlay" onclick="if(event.target===this)closeM()"><div class="modal">${inner}</div></div>`;
+}
+
+function closeM(){MODAL=null;EDIT_SEC=null;EDIT_USER=null;render();}
+
+function saveData(){
+  const t=qs('#dt')?.value?.trim(),c=qs('#dc')?.value?.trim()||'General',n=qs('#dn')?.value?.trim()||'';
+  if(!t){notify('Title required','error');return;}
+  const u=ST.users.find(u=>u.id===CU.id);if(!u)return;
+  u.data=u.data||[];
+  u.data.push({id:mkid(),title:t,cat:c,notes:n,date:new Date().toISOString().split('T')[0]});
+  CU=u;persist();MODAL=null;notify('Record added! ✓','success');render();
+}
+
+function saveUser(){
+  const n=qs('#un')?.value?.trim(),e=qs('#ue')?.value?.trim(),p=qs('#up')?.value,r=qs('#ur')?.value||'user';
+  if(!n||!e||!p){notify('Fill all fields','error');return;}
+  if(p.length<6){notify('Password min 6 chars','error');return;}
+  if(ST.users.find(u=>u.email.toLowerCase()===e.toLowerCase())){notify('Email already exists','error');return;}
+  ST.users.push({id:mkid(),name:n,email:e,password:p,role:r,createdAt:new Date().toISOString().split('T')[0],data:[],bio:''});
+  persist();MODAL=null;notify('User created! ✓','success');render();
+}
+
+function saveSec(){
+  const lbl=qs('#sl-i')?.value?.trim(),cont=qs('#sc-i')?.value||'';
+  if(!lbl){notify('Label required','error');return;}
+  const maxO=Math.max(...ST.sections.map(s=>s.order))+1;
+  ST.sections.push({id:mkid(),type:'custom',label:lbl,visible:true,order:maxO,settings:{content:cont,heading:lbl}});
+  persist();MODAL=null;notify('Section added! ✓','success');render();
+}
+
+function saveSecEdit(){
+  if(!EDIT_SEC)return;
+  const s=ST.sections.find(s=>s.id===EDIT_SEC.id);if(!s)return;
+  const lbl=qs('#es-lbl')?.value?.trim();if(lbl)s.label=lbl;
+  if(s.type==='hero'){
+    if(qs('#eh-t'))s.settings.title=qs('#eh-t').value.trim();
+    if(qs('#eh-s'))s.settings.subtitle=qs('#eh-s').value.trim();
+    if(qs('#eh-te'))s.settings.typingEffect=qs('#eh-te').checked;
+    if(qs('#eh-tsp'))s.settings.typingSpeed=parseInt(qs('#eh-tsp').value)||100;
+    if(qs('#eh-g'))s.settings.tagline=qs('#eh-g').value.trim();
+  }
+  if(s.type==='custom'&&qs('#ec-c'))s.settings.content=qs('#ec-c').value;
+  if(s.type==='contact'){
+    if(qs('#ec-e'))s.settings.email=qs('#ec-e').value.trim();
+    if(qs('#ec-g'))s.settings.github=qs('#ec-g').value.trim();
+    if(qs('#ec-l'))s.settings.linkedin=qs('#ec-l').value.trim();
+  }
+  if(s.type==='live'){
+    if(qs('#el-h'))s.settings.heading=qs('#el-h').value.trim();
+    if(qs('#el-d'))s.settings.description=qs('#el-d').value.trim();
+    if(qs('#el-u'))s.settings.streamUrl=qs('#el-u').value.trim();
+  }
+  persist();MODAL=null;EDIT_SEC=null;notify('Section updated! ✓','success');render();
+}
+
+/* ============================================================
+   BOOT
+=========================================================== */
+async function boot() {
+  const data = await load();
+  if (data) {
+    ST = data;
+  }
+  
+  if(!ST.theme) ST.theme = 'dark';
+  if(!ST.siteSettings.footerText) ST.siteSettings.footerText = DEF.siteSettings.footerText;
+  if(!ST.users.find(u=>u.role==='superadmin')){ST.users=[...DEF.users,...ST.users];}
+  if(!ST.liveMessages) ST.liveMessages=[];
+  if(!ST.liveViewers) ST.liveViewers=0;
+
+  applyColors();
+  render();
+}
+boot();
+</script>
+</body>
+</html>
